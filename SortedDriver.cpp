@@ -63,8 +63,57 @@ getWords(size_t numWords, size_t wordLength, string alphabet)
 double
 mostIsolated(vector<double> & number)
 {
-	// STUB  STUB  STUB
-	return -123.456;
+    //initialized variables
+    double diff1 = 0;
+    double diff2 = 0;
+    double nearestNeighbor = 0;
+    
+    double mostIso = 0;
+    
+    double lastEl = 0;
+    double currEl = 0;
+    double nextEl = 0;
+    
+
+    for (int i = 0; i < number.size(); i++) {
+        
+        if (i == 0) { //if the first element is being iterated, 'lastEl' doesn't exist
+            
+            currEl = number[i]; //current element
+            nextEl = number[i+1]; //next element
+            
+            diff2 = nextEl - currEl; //difference between first and second elements
+            
+            nearestNeighbor = diff2; //that difference is now the nearest neighbor
+            
+        }else if (i == number.size() - 1){ //nextEl doesn't exist
+            
+            currEl = number[i];
+            lastEl = number[i - 1];
+            
+            diff1 = currEl - lastEl;
+            
+            nearestNeighbor = diff1;
+            
+        }else{
+            
+            lastEl = number[i - 1];
+            currEl = number[i];
+            nextEl = number[i + 1];
+            
+            diff1 = currEl - lastEl;
+            diff2 = nextEl - currEl;
+            
+            nearestNeighbor = abs(min(diff1, diff2)); //finds minimum between the two differences
+            
+        }
+       
+        if(nearestNeighbor >= mostIso) //if the current nearest neighbor is greater than or equal
+            mostIso = number[i];       //to the current most isolated, then the current element is now the most isolated
+        
+    }
+    
+    return mostIso;
 }
 
 
@@ -74,49 +123,69 @@ mostIsolated(vector<double> & number)
 int
 unmatched(list<string> & A, list<string> & B)
 {
-	// STUB  STUB  STUB
-	return -1;
+    // initialize variables
+    int uniques = 0;
+    
+    
+    list<string>::iterator iterA = A.begin(); // use iterators for the lists of strings
+    list<string>::iterator iterB = B.begin();
+    
+    // Run through A
+    for (iterA; iterA != A.end(); iterA++) {
+        
+        // Run through B at the 'same time'.
+        while ((*iterB < *iterA) && (iterB != B.end()))
+            iterB++;
+        
+        // Check for a match. if none, increment uniques
+        if (*iterA != *iterB)
+            uniques++;
+        
+    }
+    
+    return uniques;
+    
 }
 
 
 int
 main()
 {
-	cout << "Find the most isolated number" << endl
-		<< "-----------------------------" << endl << endl;
-	while (true)
-	{
-		cout << "Enter size for numbers: ";
-		int n = 0;
-		cin >> n;
-		if (n <= 0)
-			break;
-		cout << "Enter seed for rand: ";
-		unsigned int seed;
-		cin >> seed;
-		srand(seed);
+    cout << "Find the most isolated number" << endl
+        << "-----------------------------" << endl << endl;
+    while (true)
+    {
+        cout << "Enter size for numbers: ";
+        int n = 0;
+        cin >> n;
+        if (n <= 0)
+            break;
+        cout << "Enter seed for rand: ";
+        unsigned int seed;
+        cin >> seed;
+        srand(seed);
 
-		// Construct a sorted list of numbers
-		Timer get;
-		get.start();
-		vector<double> numbers = getNums(n, -n, n);
-		get.stop();
-		cout << "Constructed in " << get() << " seconds"
-			<< endl;
+        // Construct a sorted list of numbers
+        Timer get;
+        get.start();
+        vector<double> numbers = getNums(n, -n, n);
+        get.stop();
+        cout << "Constructed in " << get() << " seconds"
+            << endl;
 
-		if (n < 10)
-			cout << numbers << endl << endl;
+        if (n < 10)
+            cout << numbers << endl << endl;
 
-		// Report a most isolated isolated number
-		Timer time;
-		time.start();
-		double isolated = mostIsolated(numbers);
-		time.stop();
-		cout << "The most isolated number is "
-			<< isolated << endl
-			<< "calculated in " << time() << " seconds"
-			<< endl << endl;
-	}
+        // Report a most isolated isolated number
+        Timer time;
+        time.start();
+        double isolated = mostIsolated(numbers);
+        time.stop();
+        cout << "The most isolated number is "
+            << isolated << endl
+            << "calculated in " << time() << " seconds"
+            << endl << endl;
+    }
 
 
 	cout << endl << endl;
