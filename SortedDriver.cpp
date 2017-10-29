@@ -4,6 +4,8 @@
 // Construct sorted sequences and call functions that 
 //   process the sorted sequences.
 
+//R.B. Michaud 10/28/17
+
 
 #include "RandomUtilities.h"
 #include "ContainerPrinting.h"
